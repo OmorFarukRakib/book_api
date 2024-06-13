@@ -20,6 +20,11 @@ const TABLE_NAME = process.env.DYNAMODB_TABLE;
 app.use(express.json());
 app.use(bodyParser.json()); // Ensure body-parser is used for parsing JSON
 
+// Root route for health check
+app.get("/", (req, res) => {
+  res.status(200).json({ health: "healthy" });
+});
+
 // POST /storeBook
 app.post("/storeBook", async (req, res) => {
   console.log("Incoming request body:", req.body); // Log request body
