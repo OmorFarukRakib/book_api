@@ -6,6 +6,7 @@ const {
   QueryCommand, // Changed from ScanCommand to QueryCommand
 } = require("@aws-sdk/lib-dynamodb");
 const dotenv = require("dotenv");
+const bodyParser = require("body-parser"); // Add body-parser explicitly
 const app = express();
 
 // Load environment variables
@@ -17,9 +18,11 @@ const ddbDocClient = DynamoDBDocumentClient.from(client);
 const TABLE_NAME = process.env.DYNAMODB_TABLE;
 
 app.use(express.json());
+app.use(bodyParser.json()); // Ensure body-parser is used for parsing JSON
 
 // POST /storeBook
 app.post("/storeBook", async (req, res) => {
+  console.log("Incoming request body:", req.body); // Log request body
   const { bookName, authorName, publishedDate } = req.body;
   if (!bookName || !authorName || !publishedDate) {
     return res.status(400).json({ error: "Missing required fields" });
